@@ -262,13 +262,14 @@ class Patching extends phpef {
                 ]),
                 $this->settingsOption('cron', 'statusUpdateSchedule', [
                     'label' => 'Status Update Schedule', 
-                    'placeholder' => '55 * * * *',
+                    'placeholder' => '*/5 * * * *',
                     'description' => 'How often to check and update job statuses (default: every hour at minute 55)'
                 ]),
                 $this->settingsOption('test', '/api/plugin/Patching/cron/execute', [
                     'label' => 'Run Patching Check', 
                     'text' => 'Run Now', 
-                    'Method' => 'GET'
+                    'Method' => 'GET',
+                    'success_message' => 'Patching check completed. {message}'
                 ]),
                 $this->settingsOption('test', '/api/plugin/Patching/jobs/update-status', [
                     'label' => 'Update Job Statuses', 
@@ -812,13 +813,14 @@ class Patching extends phpef {
                 $this->logging->writeLog('Patching', 'No servers due for patching', 'info');
                 return [
                     'success' => true,
-                    'message' => 'No servers due for patching',
+                    'message' => 'No servers due for patching at this time',
                     'data' => []
                 ];
             }
             
             // Process each server
-            $this->logging->writeLog('Patching', 'Found ' . count($servers) . ' servers due for patching', 'info');
+            $serverCount = count($servers);
+            $this->logging->writeLog('Patching', "Found {$serverCount} servers due for patching", 'info');
 
             $results = [];
             foreach ($servers as $server) {
@@ -875,7 +877,7 @@ class Patching extends phpef {
             
             $response = [
                 'success' => true,
-                'message' => count($results) > 0 ? 'Successfully processed servers' : 'No servers processed',
+                'message' => count($results) > 0 ? "Successfully processed {$serverCount} servers due for patching" : 'No servers processed',
                 'data' => $results
             ];
             
