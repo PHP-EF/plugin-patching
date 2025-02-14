@@ -1,10 +1,3 @@
-// Initialize patching history table when the page loads
-$(document).ready(function() {
-    if ($("#patchingHistoryTable").length) {
-        initializePatchingHistoryTable();
-    }
-});
-
 // Function to initialize the patching history table
 function initializePatchingHistoryTable() {
     $("#patchingHistoryTable").bootstrapTable({

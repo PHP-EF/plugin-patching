@@ -61,41 +61,55 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.js"></script>
   <script src="https://unpkg.com/bootstrap-table@1.24.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-
+  
+  <!-- Initialize table after all libraries are loaded -->
   <script>
-  $(document).ready(function() {
-    var data = '.json_encode($history).';
-    $("#patchingHistoryTable").bootstrapTable({
-      data: data
+    // Wait for document ready and all scripts to load
+    $(document).ready(function() {
+      // Ensure moment.js is loaded before initializing table
+      if (typeof moment !== \'undefined\' && $("#patchingHistoryTable").length) {
+        // Destroy existing instance if any
+        if ($.fn.bootstrapTable.Constructor.DEFAULTS) {
+          $("#patchingHistoryTable").bootstrapTable(\'destroy\');
+        }
+        // Initialize table
+        initializePatchingHistoryTable();
+      }
     });
-  });
 
-  function timestampFormatter(value, row, index) {
-    return moment(value).format("YYYY-MM-DD HH:mm:ss");
-  }
-
-  function statusFormatter(value, row, index) {
-    var statusClass = "";
-    switch(value.toLowerCase()) {
-      case "successful":
-        statusClass = "text-success";
-        break;
-      case "failed":
-      case "error":
-        statusClass = "text-danger";
-        break;
-      case "pending":
-        statusClass = "text-warning";
-        break;
-      default:
-        statusClass = "text-secondary";
+    function initializePatchingHistoryTable() {
+      var data = ' . json_encode($history) . ';
+      $("#patchingHistoryTable").bootstrapTable({
+        data: data
+      });
     }
-    return "<span class=\"" + statusClass + "\">" + value + "</span>";
-  }
 
-  function jobLinkFormatter(value, row, index) {
-    return "<a href=\"" + value + "\" target=\"_blank\" class=\"btn btn-sm btn-primary\">View Job</a>";
-  }
+    function timestampFormatter(value, row, index) {
+      return moment(value).format("YYYY-MM-DD HH:mm:ss");
+    }
+
+    function statusFormatter(value, row, index) {
+      var statusClass = "";
+      switch(value.toLowerCase()) {
+        case "successful":
+          statusClass = "text-success";
+          break;
+        case "failed":
+        case "error":
+          statusClass = "text-danger";
+          break;
+        case "pending":
+          statusClass = "text-warning";
+          break;
+        default:
+          statusClass = "text-secondary";
+      }
+      return "<span class=\"" + statusClass + "\">" + value + "</span>";
+    }
+
+    function jobLinkFormatter(value, row, index) {
+      return "<a href=\"" + value + "\" target=\"_blank\" class=\"btn btn-sm btn-primary\">View Job</a>";
+    }
   </script>';
 
 return $content;
