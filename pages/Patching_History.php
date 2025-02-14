@@ -70,17 +70,17 @@
       
       // Initialize table with data and configuration
       $("#patchingHistoryTable").bootstrapTable({
-        data: initialData,
-        pagination: true,
-        search: true,
-        showRefresh: true,
-        showToolbar: true,
-        toolbar: '#toolbar',
-        pageSize: 25,
-        refreshOptions: {
-          silent: true,
-          url: "/api/plugin/Patching/history",
-          method: "get"
+        "data": initialData,
+        "pagination": true,
+        "search": true,
+        "showRefresh": true,
+        "showToolbar": true,
+        "toolbar": "#toolbar",
+        "pageSize": 25,
+        "refreshOptions": {
+          "silent": true,
+          "url": "/api/plugin/Patching/history",
+          "method": "get"
         }
       });
     });
@@ -105,11 +105,11 @@
         default:
           statusClass = "text-secondary";
       }
-      return "<span class=\"" + statusClass + "\">" + value + "</span>";
+      return "<span class=\\"" + statusClass + "\\">" + value + "</span>";
     }
 
     function jobLinkFormatter(value, row, index) {
-      return "<a href=\"" + value + "\" target=\"_blank\" class=\"btn btn-sm btn-primary\">View Job</a>";
+      return "<a href=\\"" + value + "\\" target=\\"_blank\\" class=\\"btn btn-sm btn-primary\\">View Job</a>";
     }
   </script>';
 
