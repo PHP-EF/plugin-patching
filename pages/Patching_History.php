@@ -64,27 +64,7 @@
   
   <!-- Initialize table after all libraries are loaded -->
   <script>
-    // Wait for document ready and all scripts to load
-    $(document).ready(function() {
-      var initialData = ' . json_encode($history) . ';
-      
-      // Initialize table with data and configuration
-      $("#patchingHistoryTable").bootstrapTable({
-        "data": initialData,
-        "pagination": true,
-        "search": true,
-        "showRefresh": true,
-        "showToolbar": true,
-        "toolbar": "#toolbar",
-        "pageSize": 25,
-        "refreshOptions": {
-          "silent": true,
-          "url": "/api/plugin/Patching/history",
-          "method": "get"
-        }
-      });
-    });
-
+    // Define formatters first
     function timestampFormatter(value, row, index) {
       return moment(value).format("YYYY-MM-DD HH:mm:ss");
     }
@@ -111,6 +91,37 @@
     function jobLinkFormatter(value, row, index) {
       return "<a href=\\"" + value + "\\" target=\\"_blank\\" class=\\"btn btn-sm btn-primary\\">View Job</a>";
     }
+
+    // Wait for moment.js to load before initializing
+    function initTable() {
+      if (typeof moment === "undefined") {
+        setTimeout(initTable, 100); // Try again in 100ms
+        return;
+      }
+
+      var initialData = ' . json_encode($history) . ';
+      
+      // Initialize table with data and configuration
+      $("#patchingHistoryTable").bootstrapTable({
+        "data": initialData,
+        "pagination": true,
+        "search": true,
+        "showRefresh": true,
+        "showToolbar": true,
+        "toolbar": "#toolbar",
+        "pageSize": 25,
+        "refreshOptions": {
+          "silent": true,
+          "url": "/api/plugin/Patching/history",
+          "method": "get"
+        }
+      });
+    }
+
+    // Start initialization when document is ready
+    $(document).ready(function() {
+      initTable();
+    });
   </script>';
 
 return $content;
