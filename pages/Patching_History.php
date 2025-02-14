@@ -66,23 +66,24 @@
   <script>
     // Wait for document ready and all scripts to load
     $(document).ready(function() {
-      // Ensure moment.js is loaded before initializing table
-      if (typeof moment !== \'undefined\' && $("#patchingHistoryTable").length) {
-        // Destroy existing instance if any
-        if ($.fn.bootstrapTable.Constructor.DEFAULTS) {
-          $("#patchingHistoryTable").bootstrapTable(\'destroy\');
-        }
-        // Initialize table
-        initializePatchingHistoryTable();
-      }
-    });
-
-    function initializePatchingHistoryTable() {
-      var data = ' . json_encode($history) . ';
+      var initialData = ' . json_encode($history) . ';
+      
+      // Initialize table with data and configuration
       $("#patchingHistoryTable").bootstrapTable({
-        data: data
+        data: initialData,
+        pagination: true,
+        search: true,
+        showRefresh: true,
+        showToolbar: true,
+        toolbar: '#toolbar',
+        pageSize: 25,
+        refreshOptions: {
+          silent: true,
+          url: "/api/plugin/Patching/history",
+          method: "get"
+        }
       });
-    }
+    });
 
     function timestampFormatter(value, row, index) {
       return moment(value).format("YYYY-MM-DD HH:mm:ss");
