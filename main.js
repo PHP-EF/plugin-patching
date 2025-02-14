@@ -9,10 +9,15 @@ $(document).ready(function() {
 function initializePatchingHistoryTable() {
     $("#patchingHistoryTable").bootstrapTable({
         url: "/api/plugin/Patching/history",
+        method: 'get',
         pagination: true,
         search: true,
         showRefresh: true,
         pageSize: 25,
+        refresh: {
+            url: "/api/plugin/Patching/history",
+            method: 'get'
+        },
         columns: [{
             field: "server_name",
             title: "Server Name",

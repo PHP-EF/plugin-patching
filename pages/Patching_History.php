@@ -32,12 +32,7 @@
           <div class="card-body">
             <div class="container">
               <div class="row justify-content-center">
-                <table id="patchingHistoryTable" 
-                       class="table table-striped"
-                       data-pagination="true"
-                       data-search="true"
-                       data-show-refresh="true"
-                       data-page-size="25">
+                <table id="patchingHistoryTable" class="table table-striped">
                   <thead>
                     <tr>
                       <th data-field="server_name">Server Name</th>
