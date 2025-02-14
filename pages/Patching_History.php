@@ -32,59 +32,23 @@
           <div class="card-body">
             <div class="container">
               <div class="row justify-content-center">
-                <table class="table table-striped" id="patchingHistoryTable">
+                <table id="patchingHistoryTable" 
+                       class="table table-striped"
+                       data-pagination="true"
+                       data-search="true"
+                       data-show-refresh="true"
+                       data-page-size="25">
                   <thead>
                     <tr>
-                      <th>Server Name</th>
-                      <th>OS Type</th>
-                      <th>Template</th>
-                      <th>Time</th>
-                      <th>Initial Status</th>
-                      <th>Final Status</th>
-                      <th>Job Link</th>
+                      <th data-field="server_name">Server Name</th>
+                      <th data-field="os_type">OS Type</th>
+                      <th data-field="template_key">Template</th>
+                      <th data-field="timestamp" data-formatter="timestampFormatter">Time</th>
+                      <th data-field="initial_status">Initial Status</th>
+                      <th data-field="final_status" data-formatter="statusFormatter">Final Status</th>
+                      <th data-field="job_link" data-formatter="jobLinkFormatter">Job Link</th>
                     </tr>
                   </thead>
-                  <tbody>';
-                  
-  if (empty($history)) {
-    $content .= '
-                    <tr>
-                      <td colspan="7" class="text-center">No patching history records found</td>
-                    </tr>';
-  } else {
-    foreach ($history as $record) {
-      $finalStatus = $record['final_status'] ? $record['final_status'] : 'Pending';
-      $statusClass = '';
-      switch(strtolower($finalStatus)) {
-        case 'successful':
-          $statusClass = 'text-success';
-          break;
-        case 'failed':
-        case 'error':
-          $statusClass = 'text-danger';
-          break;
-        case 'pending':
-          $statusClass = 'text-warning';
-          break;
-        default:
-          $statusClass = 'text-secondary';
-      }
-      
-      $content .= '
-                      <tr>
-                        <td>'.$record['server_name'].'</td>
-                        <td>'.$record['os_type'].'</td>
-                        <td>'.$record['template_key'].'</td>
-                        <td>'.$record['timestamp'].'</td>
-                        <td>'.$record['initial_status'].'</td>
-                        <td class="'.$statusClass.'">'.$finalStatus.'</td>
-                        <td><a href="'.$record['job_link'].'" target="_blank" class="btn btn-sm btn-primary">View Job</a></td>
-                      </tr>';
-    }
-  }
-  
-  $content .= '
-                  </tbody>
                 </table>
               </div>
             </div>
@@ -94,14 +58,46 @@
     </div>
   </div>
 
+  <!-- Required Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.24.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+
   <script>
   $(document).ready(function() {
-    $("#patchingHistoryTable").DataTable({
-      "order": [[3, "desc"]], // Sort by timestamp by default
-      "pageLength": 25,
-      "responsive": true
+    var data = '.json_encode($history).';
+    $("#patchingHistoryTable").bootstrapTable({
+      data: data
     });
   });
+
+  function timestampFormatter(value, row, index) {
+    return moment(value).format("YYYY-MM-DD HH:mm:ss");
+  }
+
+  function statusFormatter(value, row, index) {
+    var statusClass = "";
+    switch(value.toLowerCase()) {
+      case "successful":
+        statusClass = "text-success";
+        break;
+      case "failed":
+      case "error":
+        statusClass = "text-danger";
+        break;
+      case "pending":
+        statusClass = "text-warning";
+        break;
+      default:
+        statusClass = "text-secondary";
+    }
+    return "<span class=\"" + statusClass + "\">" + value + "</span>";
+  }
+
+  function jobLinkFormatter(value, row, index) {
+    return "<a href=\"" + value + "\" target=\"_blank\" class=\"btn btn-sm btn-primary\">View Job</a>";
+  }
   </script>';
 
 return $content;

@@ -58,7 +58,7 @@ trait CMDBTrait {
             final_status TEXT
         )");
         
-        $this->logging->writeLog('Patching', 'Ensured patching_history table exists', 'debug');
+        // $this->logging->writeLog('Patching', 'Ensured patching_history table exists', 'info');
     }
 
     /**
@@ -119,7 +119,7 @@ trait CMDBTrait {
                 ]
             ];
         } catch (Exception $e) {
-            $this->logging->writeLog('Patching', 'Error verifying database structure: ' . $e->getMessage(), 'error');
+            $this->logging->writeLog('Patching', 'Error verifying database structure: ' . $e->getMessage(), 'warning');
             return [
                 'success' => false,
                 'error' => $e->getMessage()
@@ -139,7 +139,7 @@ trait CMDBTrait {
                 'message' => 'Successfully recreated patching history table'
             ];
         } catch (Exception $e) {
-            $this->logging->writeLog('Patching', 'Error recreating database structure: ' . $e->getMessage(), 'error');
+            $this->logging->writeLog('Patching', 'Error recreating database structure: ' . $e->getMessage(), 'warning');
             return [
                 'success' => false,
                 'error' => $e->getMessage()
@@ -208,7 +208,7 @@ class Patching extends phpef {
         // Get templates based on selected label
         $templates = [];
         if ($patchingLabel) {
-            $this->logging->writeLog("Patching", "Fetching templates with label: " . $patchingLabel, "debug");
+            $this->logging->writeLog("Patching", "Fetching templates with label: " . $patchingLabel, "info");
             $templates = $this->awx->GetAnsibleJobTemplate(null, $patchingLabel) ?? [];
         }
         
