@@ -13,8 +13,9 @@ function initializePatchingHistoryTable() {
         pagination: true,
         search: true,
         showRefresh: true,
-        pageSize: 25,
+        showToolbar: true,
         toolbar: '#toolbar',
+        pageSize: 25,
         refreshOptions: {
             silent: true
         },

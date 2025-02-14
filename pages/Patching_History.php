@@ -32,6 +32,9 @@
           <div class="card-body">
             <div class="container">
               <div class="row justify-content-center">
+                <div id="toolbar">
+                  <div class="bootstrap-table-toolbar"></div>
+                </div>
                 <table id="patchingHistoryTable" class="table table-striped">
                   <thead>
                     <tr>
