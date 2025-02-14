@@ -14,9 +14,9 @@ function initializePatchingHistoryTable() {
         search: true,
         showRefresh: true,
         pageSize: 25,
-        refresh: {
-            url: "/api/plugin/Patching/history",
-            method: 'get'
+        toolbar: '#toolbar',
+        refreshOptions: {
+            silent: true
         },
         columns: [{
             field: "server_name",
@@ -30,22 +30,41 @@ function initializePatchingHistoryTable() {
             field: "timestamp",
             title: "Date/Time",
             sortable: true,
-            formatter: function(value) {
-                return moment(value).format("YYYY-MM-DD HH:mm:ss");
-            }
+            formatter: timestampFormatter
         }, {
             field: "status",
             title: "Status",
             sortable: true,
-            formatter: function(value) {
-                if (value === "successful") {
-                    return "<span class='badge bg-success'>Successful</span>";
-                } else if (value === "failed") {
-                    return "<span class='badge bg-danger'>Failed</span>";
-                } else {
-                    return "<span class='badge bg-warning'>" + value + "</span>";
-                }
-            }
+            formatter: statusFormatter
+        }, {
+            field: "job_link",
+            title: "Job Link",
+            sortable: false,
+            formatter: jobLinkFormatter
         }]
     });
+}
+
+// Timestamp formatter
+function timestampFormatter(value) {
+    return moment(value).format("YYYY-MM-DD HH:mm:ss");
+}
+
+// Status formatter
+function statusFormatter(value) {
+    value = value || 'Pending';
+    if (value.toLowerCase() === "successful") {
+        return "<span class='badge bg-success'>Successful</span>";
+    } else if (value.toLowerCase() === "failed" || value.toLowerCase() === "error") {
+        return "<span class='badge bg-danger'>" + value + "</span>";
+    } else if (value.toLowerCase() === "pending") {
+        return "<span class='badge bg-warning'>" + value + "</span>";
+    } else {
+        return "<span class='badge bg-secondary'>" + value + "</span>";
+    }
+}
+
+// Job link formatter
+function jobLinkFormatter(value) {
+    return '<a href="' + value + '" target="_blank" class="btn btn-sm btn-primary">View Job</a>';
 }
