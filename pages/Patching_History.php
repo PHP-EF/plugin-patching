@@ -104,16 +104,18 @@
       // Initialize table with data and configuration
       $("#patchingHistoryTable").bootstrapTable({
         "data": initialData,
+        "url": "/api/plugin/Patching/history",
+        "method": "get",
         "pagination": true,
         "search": true,
         "showRefresh": true,
         "showToolbar": true,
         "toolbar": "#toolbar",
         "pageSize": 25,
-        "refreshOptions": {
-          "silent": true,
-          "url": "/api/plugin/Patching/history",
-          "method": "get"
+        "onRefresh": function() {
+          $("#patchingHistoryTable").bootstrapTable("refresh", {
+            "url": "/api/plugin/Patching/history"
+          });
         }
       });
     }
