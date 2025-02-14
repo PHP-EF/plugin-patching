@@ -112,11 +112,8 @@
         "showToolbar": true,
         "toolbar": "#toolbar",
         "pageSize": 25,
-        "onRefresh": function() {
-          $("#patchingHistoryTable").bootstrapTable("refresh", {
-            "url": "/api/plugin/Patching/history"
-          });
-        }
+        "sidePagination": "client",
+        "cache": false
       });
     }
 
