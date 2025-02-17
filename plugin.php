@@ -875,9 +875,17 @@ class Patching extends phpef {
                 }
             }
             
+            $successCount = count(array_filter($results, function($r) {
+                return isset($r['job_launch_result']) && $r['job_launch_result']['success'];
+            }));
+            
+            $message = $successCount > 0 ? 
+                "Successfully processed {$successCount} " . ($successCount === 1 ? "server" : "servers") . " due for patching" :
+                "No servers were successfully processed for patching";
+            
             $response = [
                 'success' => true,
-                'message' => count($results) > 0 ? "Successfully processed {$serverCount} servers due for patching" : 'No servers processed',
+                'message' => $message,
                 'data' => $results
             ];
             

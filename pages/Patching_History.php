@@ -1,4 +1,11 @@
-<?php
+function statusFormatter(value, row, index) {
+  var statusClass = "";
+  // Handle null or undefined values
+  if (!value) {
+    return "<span class=\"text-secondary\">Unknown</span>";
+  }
+  // ... rest of the function
+}<?php
   $Patching = new Patching();
   $pluginConfig = $Patching->config->get('Plugins','Patching');
   if ($Patching->auth->checkAccess('ADMIN-CONFIG') == false) {
@@ -71,6 +78,10 @@
 
     function statusFormatter(value, row, index) {
       var statusClass = "";
+      // Handle null or undefined values
+      if (!value) {
+        return "<span class=\"text-secondary\">Unknown</span>";
+      }
       switch(value.toLowerCase()) {
         case "successful":
           statusClass = "text-success";
@@ -85,11 +96,11 @@
         default:
           statusClass = "text-secondary";
       }
-      return "<span class=\\"" + statusClass + "\\">" + value + "</span>";
+      return "<span class=\"" + statusClass + "\">" + value + "</span>";
     }
 
     function jobLinkFormatter(value, row, index) {
-      return "<a href=\\"" + value + "\\" target=\\"_blank\\" class=\\"btn btn-sm btn-primary\\">View Job</a>";
+      return "<a href=\"" + value + "\" target=\"_blank\" class=\"btn btn-sm btn-primary\">View Job</a>";
     }
 
     // Wait for moment.js to load before initializing
