@@ -5,7 +5,7 @@
     return "<span class=\"text-secondary\">Unknown</span>";
   }
   // ... rest of the function
-}
+} -->
 <?php
   $Patching = new Patching();
   $pluginConfig = $Patching->config->get('Plugins','Patching');
