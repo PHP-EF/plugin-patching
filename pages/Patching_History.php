@@ -1,11 +1,12 @@
-function statusFormatter(value, row, index) {
+<!-- function statusFormatter(value, row, index) {
   var statusClass = "";
   // Handle null or undefined values
   if (!value) {
     return "<span class=\"text-secondary\">Unknown</span>";
   }
   // ... rest of the function
-}<?php
+}
+<?php
   $Patching = new Patching();
   $pluginConfig = $Patching->config->get('Plugins','Patching');
   if ($Patching->auth->checkAccess('ADMIN-CONFIG') == false) {
